@@ -54,6 +54,7 @@ DB_PASSWORD=secret
 Gere a chave da aplicação e rode as migrations:
 
 ```
+docker-compose exec app bash
 php artisan key:generate
 php artisan migrate
 ```
@@ -66,4 +67,15 @@ npm install
 npm run dev
 ```
 
+### Acesse a pagina do front pela porta 5173
+
+http://localhost:5173/
+
+
+## Criando dados ficticios para testar a aplicação
+
+
+```
+php artisan db:seed
+```
 
