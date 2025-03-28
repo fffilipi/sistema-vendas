@@ -98,3 +98,7 @@ https://documenter.getpostman.com/view/43541147/2sAYkLoHo7
 ### Documentação de desenvolvimento
 
 https://drive.google.com/file/d/1XKkcHQS1DVgkYG6rAHdgWJ18X-MXa578/view?usp=drive_link
+
+## Resultado
+
+https://github.com/user-attachments/assets/ade6a0b3-4183-45b7-8b49-f2acb19fa01b
