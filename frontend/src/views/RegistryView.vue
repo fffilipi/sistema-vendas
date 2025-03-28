@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
     <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
       <h2 class="text-2xl font-bold text-center mb-6">Cadastro</h2>
       <form @submit.prevent="handleSubmit">
@@ -44,9 +44,17 @@
 
         <button
           type="submit"
-          class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg mt-6 transition"
         >
           Cadastrar
+        </button>
+
+        <button
+          type="button"
+          @click="goToLogin" 
+          class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg mt-6 transition"
+        >
+          Voltar para Login
         </button>
       </form>
     </div>
@@ -58,6 +66,14 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export default {
+  setup() {
+    const router = useRouter();
+
+    return {
+      router,
+      goToLogin: () => router.push({ name: 'Login' })
+    };
+  },
   data() {
     return {
       form: {
@@ -127,7 +143,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* Estilos adicionais para melhorar o layout */
-</style>
