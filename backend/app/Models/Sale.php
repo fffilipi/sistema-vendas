@@ -9,7 +9,7 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['employee_id', 'amount', 'sale_date'];
+    protected $fillable = ['employee_id', 'value', 'sale_date'];
 
     // Uma venda pertence a um vendedor
     public function employee()
