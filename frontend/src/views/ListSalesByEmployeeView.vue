@@ -11,10 +11,10 @@
     <!-- Select para escolher o vendedor -->
     <div class="mb-4">
       <label class="block text-gray-700 mb-1">Selecione um vendedor:</label>
-      <select v-model="selectedVendedor" @change="fetchVendas" class="w-full p-2 border rounded-md">
+      <select v-model="selectedEmployee" @change="fetchSales" class="w-full p-2 border rounded-md">
         <option value="" disabled>Escolha um vendedor</option>
-        <option v-for="vendedor in vendedores" :key="vendedor.id" :value="vendedor.id">
-          {{ vendedor.name }}
+        <option v-for="employee in employees" :key="employee.id" :value="employee.id">
+          {{ employee.name }}
         </option>
       </select>
     </div>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Tabela Responsiva -->
-    <div v-if="vendas.length > 0" class="overflow-x-auto bg-white shadow-md rounded-lg p-4">
+    <div v-if="sales.length > 0" class="overflow-x-auto bg-white shadow-md rounded-lg p-4">
       <table class="w-full border-collapse min-w-[400px]">
         <thead>
           <tr class="bg-gray-200 text-left text-sm md:text-base">
@@ -36,21 +36,21 @@
         </thead>
         <tbody>
           <tr 
-            v-for="(venda, index) in vendas" 
-            :key="venda.id" 
+            v-for="(sale, index) in sales" 
+            :key="sale.id" 
             :class="index % 2 === 0 ? 'bg-gray-100' : 'bg-white'"
             class="border-b text-sm md:text-base"
           >
             <td class="p-2 md:p-3">{{ index + 1 }}</td>
-            <td class="p-2 md:p-3">R$ {{ venda.value }}</td>
-            <td class="p-2 md:p-3">{{ formatDate(venda.sale_date) }}</td>
+            <td class="p-2 md:p-3">R$ {{ sale.value }}</td>
+            <td class="p-2 md:p-3">{{ formatDate(sale.sale_date) }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Mensagem caso não tenha vendas -->
-    <p v-if="vendas.length === 0 && selectedVendedor && !error" class="text-gray-500 mt-4 text-center">
+    <p v-if="sales.length === 0 && selectedEmployee && !error" class="text-gray-500 mt-4 text-center">
       Nenhuma venda encontrada para este vendedor.
     </p>
   </div>
@@ -62,42 +62,41 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      vendedores: [],
-      vendas: [],
-      selectedVendedor: "",
+      employees: [],
+      sales: [],
+      selectedEmployee: "",
       error: null
     };
   },
   async created() {
-    await this.fetchVendedores();
+    await this.fetchEmployees();
   },
   methods: {
     // Buscar lista de vendedores
-    async fetchVendedores() {
+    async fetchEmployees() {
       try {
         const token = localStorage.getItem('auth_token');
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/vendedores`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        this.vendedores = response.data;
+        this.employees = response.data;
       } catch (err) {
         this.error = "Erro ao carregar vendedores.";
       }
     },
 
-    // Buscar vendas do vendedor selecionado
-    async fetchVendas() {
-      if (!this.selectedVendedor) return;
+    async fetchSales() {
+      if (!this.selectedEmployee) return;
 
       try {
         this.error = null;
         const token = localStorage.getItem('auth_token');
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/vendas/vendedor/${this.selectedVendedor}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/vendas/vendedor/${this.selectedEmployee}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        this.vendas = response.data;
+        this.sales = response.data;
       } catch (err) {
         this.error = "Erro ao carregar vendas.";
       }

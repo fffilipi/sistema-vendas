@@ -64,6 +64,19 @@ php artisan migrate
 ```
 cd frontend
 npm install
+```
+
+## Configure o .env do front
+
+Indique a URL base do seu back para consumo do frontend
+
+```
+cp .env.example .env
+```
+
+## Execute o projeto
+
+```
 npm run dev
 ```
 
