@@ -42,5 +42,12 @@ RUN chmod 0644 /etc/cron.d/laravel-cron
 # Carregue o crontab
 RUN crontab /etc/cron.d/laravel-cron
 
+# Criar diretórios storage e bootstrap/cache
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache
+
+# Ajustar permissões dos diretórios
+RUN chown -R www-data:www-data /var/www && \
+    chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
 # Inicia o cron junto com o PHP-FPM
 CMD service cron start && php-fpm
