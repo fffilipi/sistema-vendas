@@ -74,8 +74,10 @@ http://localhost:5173/
 
 ## Criando dados ficticios para testar a aplicação
 
-
 ```
 php artisan db:seed
 ```
 
+### Documentação API
+
+https://documenter.getpostman.com/view/43541147/2sAYkLoHo7
