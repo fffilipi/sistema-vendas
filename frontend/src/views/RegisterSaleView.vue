@@ -46,7 +46,7 @@
         class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
         :disabled="loading"
       >
-        {{ loading ? "Registrando " : "Cadatro de venda" }}
+        {{ loading ? "Registrando " : "Cadastro de venda" }}
       </button>
 
       <p v-if="successMessage" class="text-green-600 mt-4 text-center">

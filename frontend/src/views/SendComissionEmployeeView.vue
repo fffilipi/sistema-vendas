@@ -78,8 +78,8 @@
   
         try {
           const token = localStorage.getItem("auth_token");
-          const url = `${import.meta.env.VITE_API_URL}/${this.selectedSeller}`;
-  
+          const url = `${import.meta.env.VITE_API_URL}/api/reenvio-comissao/${this.selectedSeller}`;
+
           const response = await axios.post(url, {}, {
             headers: { Authorization: `Bearer ${token}` },
           });

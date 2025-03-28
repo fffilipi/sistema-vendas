@@ -80,7 +80,7 @@ cp .env.example .env
 npm run dev
 ```
 
-### Acesse a pagina do front pela porta 5173
+### Acesse a aplicação
 
 http://localhost:5173/
 
@@ -94,3 +94,7 @@ php artisan db:seed
 ### Documentação API
 
 https://documenter.getpostman.com/view/43541147/2sAYkLoHo7
+
+### Documentação de desenvolvimento
+
+https://drive.google.com/file/d/1XKkcHQS1DVgkYG6rAHdgWJ18X-MXa578/view?usp=drive_link

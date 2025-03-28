@@ -42,7 +42,7 @@
             <td class="p-2 md:p-3">{{ index + 1 }}</td>
             <td class="p-2 md:p-3">{{ sale.employee.name }}</td>
             <td class="p-2 md:p-3 break-words max-w-[150px]">R$ {{ sale.value }}</td>
-            <td class="p-2 md:p-3">{{ formatDate(sale.sale_date) }}</td>
+            <td class="p-2 md:p-3">{{ sale.sale_date }}</td>
           </tr>
         </tbody>
       </table>
@@ -88,12 +88,6 @@ export default {
         this.error = "Erro ao buscar vendas. Tente novamente.";
         console.error(err);
       }
-    },
-
-    // Função para formatar a data de criação
-    formatDate(dateString) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(dateString).toLocaleDateString("pt-BR", options);
     },
 
     // Função para voltar para a página anterior

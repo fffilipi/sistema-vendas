@@ -38,7 +38,14 @@ class SaleController extends Controller
     public function index()
     {
         try {
-            $sales = Sale::with('employee:id,name')->orderBy('sale_date', 'desc')->get();
+            $sales = Sale::with('employee:id,name')
+                ->orderBy('sale_date', 'desc')
+                ->get()
+                ->map(function ($sale) {
+                    $sale->sale_date = \Carbon\Carbon::parse($sale->sale_date)->format('d/m/Y');
+                    return $sale;
+                });
+
             return response()->json($sales);
 
         } catch (Exception $e) {
