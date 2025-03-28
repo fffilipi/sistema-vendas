@@ -38,7 +38,7 @@ class SaleController extends Controller
     public function index()
     {
         try {
-            $sales = Sale::all();
+            $sales = Sale::with('employee:id,name')->orderBy('sale_date', 'desc')->get();
             return response()->json($sales);
 
         } catch (Exception $e) {

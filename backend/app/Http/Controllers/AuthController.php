@@ -26,6 +26,10 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
+            if (!$user) {
+                return response()->json(['message' => 'Erro ao registrar usuário'], 500);
+            }
+
             $token = $user->createToken('authToken')->plainTextToken;
 
             return response()->json(['user' => $user, 'token' => $token], 201);
@@ -64,8 +68,12 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
-            $request->user()->tokens()->delete();
-            return response()->json(['message' => 'Logout realizado com sucesso']);
+            
+            if ($request->user()->tokens()->delete()) {
+                return response()->json(['message' => 'Logout realizado com sucesso'], 200);
+            }
+
+            return response()->json(['message' => 'Erro ao realizar logout'], 500);
 
         } catch (Exception $e) {
             Log::error('Erro ao realizar logout: ' . $e->getMessage());

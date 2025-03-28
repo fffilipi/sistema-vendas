@@ -36,7 +36,7 @@ class EmployeeController extends Controller
     public function index()
     {
         try {
-            $employees = Employee::all();
+            $employees = Employee::orderBy('created_at', 'desc')->get();
             return response()->json($employees);
         } catch (Exception $e) {
             return response()->json([
