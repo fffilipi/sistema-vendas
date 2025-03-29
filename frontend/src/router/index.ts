@@ -33,43 +33,59 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    meta: { showHeaderFooter: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/register-employee',
     name: 'register-employee',
-    component: RegisterEmployee
+    component: RegisterEmployee,
+    meta: { requiresAuth: true }
   },
   {
     path: '/register-sale',
     name: 'register-sale',
-    component: RegisterSale
+    component: RegisterSale,
+    meta: { requiresAuth: true }
   },
   {
     path: '/list-employees',
     name: 'list-employees',
-    component: ListEmployees
+    component: ListEmployees,
+    meta: { requiresAuth: true }
   },
   {
     path: '/list-sales',
     name: 'list-sales',
-    component: ListSales
+    component: ListSales,
+    meta: { requiresAuth: true }
   },
   {
     path: '/list-sales-by-employee',
     name: 'list-sales-by-employee',
-    component: ListSalesByEmployee
+    component: ListSalesByEmployee,
+    meta: { requiresAuth: true }
   },
   {
     path: '/send-comission-employee',
     name: 'send-comission-employee',
-    component: SendComissionEmployee
+    component: SendComissionEmployee,
+    meta: { requiresAuth: true }
   }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('auth_token');
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: 'Home' });
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -35,10 +35,13 @@ export default {
         );
 
         if (response.status === 200) {
+          localStorage.removeItem('auth_token');
           this.$router.push({ name: 'Home' });
         }
       } catch (error) {
-        alert('Erro ao tentar deslogar. Por favor, tente novamente.');
+        // alert('Erro ao tentar deslogar. Por favor, tente novamente.');
+        localStorage.removeItem('auth_token');
+        this.$router.push({ name: 'Home' });
       }
     }
   },
