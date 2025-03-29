@@ -109,7 +109,7 @@ export default {
       }
 
       // Validando senha
-      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*_])[A-Za-z\d!@#$%^&*]{8,20}$/;
+      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*_])[A-Za-z\d!@#$%^&*_]{8,20}$/;
       if (!this.form.password || !passwordPattern.test(this.form.password)) {
         this.errors.password = "A senha deve ter entre 8 e 20 caracteres, incluindo letras maiúsculas, números e ao menos um caractere especial!";
         isValid = false;
