@@ -56,10 +56,10 @@ class SaleController extends Controller
         }
     }
 
-    public function salesForEmployee($vendedorId)
+    public function salesForEmployee($employeeId)
     {
         try {
-            $sales = Sale::where('employee_id', $vendedorId)->get();
+            $sales = Sale::where('employee_id', $employeeId)->get();
             return response()->json($sales);
 
         } catch (Exception $e) {

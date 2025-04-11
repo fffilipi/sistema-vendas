@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\SaleController;
-use App\Http\Controllers\ComissaoController;
+use App\Http\Controllers\CommissionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,5 +18,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('api/vendas', SaleController::class);
     Route::get('api/vendas/vendedor/{vendedorId}', [SaleController::class, 'salesForEmployee']);
     Route::post('api/logout', [AuthController::class, 'logout']);
-    Route::post('api/reenvio-comissao/{vendedor_id}', [ComissaoController::class, 'reenviarRelatorioComissao']);
+    Route::post('api/reenvio-comissao/{vendedor_id}', [CommissionController::class, 'resendReportCommission']);
 });
