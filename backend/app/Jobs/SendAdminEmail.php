@@ -17,10 +17,16 @@ class SendAdminEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * Handle the job to send the daily sales report email to the administrator.
+     *
+     * @return void
+     * @throws \Exception If the admin email is not configured or no sales are registered for the day.
+     */
     public function handle()
     {
         try {
-            $adminEmail = config('mail.admin_email'); // Defina isso no .env
+            $adminEmail = config('mail.admin_email'); // Defined in the .env file
 
             if (!$adminEmail) {
                 throw new Exception("E-mail do administrador não está configurado.");
@@ -33,14 +39,14 @@ class SendAdminEmail implements ShouldQueue
                 throw new Exception("Nenhuma venda registrada para o dia de hoje.");
             }
 
-            // Envia o e-mail para o administrador
+            // Send the email to the administrator
             Mail::to($adminEmail)
                 ->send(new DailySalesReportEmail($totalSalesOfDay, $totalSalesCount));
 
         } catch (Exception $e) {
             Log::error("Erro ao enviar e-mail de relatório de vendas para o administrador: " . $e->getMessage());
 
-            // TODO: notificar o administrador sobre o erro
+            // TODO: Notify the administrator about the error
         }
     }
 }
