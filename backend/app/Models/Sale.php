@@ -11,7 +11,11 @@ class Sale extends Model
 
     protected $fillable = ['employee_id', 'value', 'sale_date'];
 
-    // Uma venda pertence a um vendedor
+    /**
+     * Get the employee associated with the sale.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo The relationship indicating that a sale belongs to an employee.
+     */
     public function employee()
     {
         return $this->belongsTo(Employee::class);

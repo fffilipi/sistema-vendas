@@ -11,7 +11,11 @@ class Employee extends Model
 
     protected $fillable = ['name', 'email'];
 
-    // Um vendedor pode ter várias vendas
+    /**
+     * Get the sales associated with the employee.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany The relationship indicating that an employee can have many sales.
+     */
     public function sales()
     {
         return $this->hasMany(Sale::class);
