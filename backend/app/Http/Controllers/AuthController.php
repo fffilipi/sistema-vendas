@@ -11,6 +11,12 @@ use Exception;
 
 class AuthController extends Controller
 {
+    /**
+     * Register a new user.
+     *
+     * @param Request $request The HTTP request containing 'name', 'email', and 'password'.
+     * @return \Illuminate\Http\JsonResponse A JSON response with the created user and token, or an error message.
+     */
     public function register(Request $request)
     {
         try {
@@ -41,6 +47,12 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Authenticate a user and generate an access token.
+     *
+     * @param Request $request The HTTP request containing 'email' and 'password'.
+     * @return \Illuminate\Http\JsonResponse A JSON response with the generated token, or an error message.
+     */
     public function login(Request $request)
     {
         try {
@@ -65,10 +77,15 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Logout the authenticated user by revoking all tokens.
+     *
+     * @param Request $request The HTTP request containing the authenticated user.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating success or failure.
+     */
     public function logout(Request $request)
     {
         try {
-            
             if ($request->user()->tokens()->delete()) {
                 return response()->json(['message' => 'Logout realizado com sucesso'], 200);
             }
