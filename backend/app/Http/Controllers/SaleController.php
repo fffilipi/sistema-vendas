@@ -9,6 +9,12 @@ use Illuminate\Validation\ValidationException;
 
 class SaleController extends Controller
 {
+    /**
+     * Store a new sale in the database.
+     *
+     * @param Request $request The HTTP request containing 'employee_id', 'value', and 'sale_date'.
+     * @return \Illuminate\Http\JsonResponse A JSON response with the created sale or an error message.
+     */
     public function store(Request $request)
     {
         try {
@@ -35,6 +41,11 @@ class SaleController extends Controller
         }
     }
 
+    /**
+     * Retrieve a list of all sales.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response with the list of sales or an error message.
+     */
     public function index()
     {
         try {
@@ -56,6 +67,12 @@ class SaleController extends Controller
         }
     }
 
+    /**
+     * Retrieve all sales for a specific employee.
+     *
+     * @param int $employeeId The ID of the employee whose sales will be retrieved.
+     * @return \Illuminate\Http\JsonResponse A JSON response with the list of sales for the employee or an error message.
+     */
     public function salesForEmployee($employeeId)
     {
         try {
