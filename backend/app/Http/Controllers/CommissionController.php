@@ -7,6 +7,12 @@ use App\Models\Employee;
 
 class CommissionController extends Controller
 {
+    /**
+     * Resend the commission report email to the specified employee.
+     *
+     * @param int $employeeId The ID of the employee to whom the email will be sent.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating success or failure.
+     */
     public function resendReportCommission($employeeId)
     {
         try {
