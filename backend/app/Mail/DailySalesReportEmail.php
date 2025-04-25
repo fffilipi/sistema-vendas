@@ -16,10 +16,10 @@ class DailySalesReportEmail extends Mailable
     public $today;
 
     /**
-     * Crie uma nova instância do mailable.
+     * Create a new instance of the mailable.
      *
-     * @param  float  $totalSalesOfDay
-     * @param  int  $totalSales
+     * @param float $totalSalesOfDay The total value of sales made during the day.
+     * @param int $totalSales The total number of sales made during the day.
      * @return void
      */
     public function __construct($totalSalesOfDay, $totalSales)
@@ -30,9 +30,9 @@ class DailySalesReportEmail extends Mailable
     }
 
     /**
-     * Defina o conteúdo do e-mail.
+     * Define the content of the email.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View The view representing the email content.
      */
     public function build()
     {
