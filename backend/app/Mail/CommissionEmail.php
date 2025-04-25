@@ -19,12 +19,12 @@ class CommissionEmail extends Mailable
     public $today;
 
     /**
-     * Crie uma nova instância do mailable.
+     * Create a new instance of the mailable.
      *
-     * @param  \App\Models\Employee  $employee
-     * @param  float  $totalSales
-     * @param  float  $valueTotalSales
-     * @param  float  $commission
+     * @param \App\Models\Employee $employee The employee instance.
+     * @param float $totalSales The total number of sales made by the employee.
+     * @param float $valueTotalSales The total value of sales made by the employee.
+     * @param float $commission The commission amount calculated for the employee.
      * @return void
      */
     public function __construct(Employee $employee, $totalSales, $valueTotalSales, $commission)
@@ -37,9 +37,9 @@ class CommissionEmail extends Mailable
     }
 
     /**
-     * Defina o conteúdo do e-mail.
+     * Define the content of the email.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View The view representing the email content.
      */
     public function build()
     {
