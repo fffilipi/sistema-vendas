@@ -11,7 +11,14 @@ use App\Models\Employee;
 class Kernel extends ConsoleKernel
 {
     /**
-     * Definir as tarefas agendadas.
+     * Define the application's command schedule.
+     *
+     * This method schedules two tasks to run daily at specific times:
+     * - Sends emails to all employees at the time specified by the `EMPLOYEE_EMAIL_TIME` environment variable.
+     * - Sends an email to the admin at the time specified by the `ADMIN_EMAIL_TIME` environment variable.
+     *
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule The schedule instance used to define tasks.
+     * @return void
      */
     protected function schedule(Schedule $schedule)
     {
