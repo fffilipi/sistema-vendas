@@ -8,6 +8,12 @@ use Exception;
 
 class EmployeeController extends Controller
 {
+    /**
+     * Store a new employee in the database.
+     *
+     * @param Request $request The HTTP request containing 'name' and 'email'.
+     * @return \Illuminate\Http\JsonResponse A JSON response with the created employee or an error message.
+     */
     public function store(Request $request)
     {
         try {
@@ -33,6 +39,11 @@ class EmployeeController extends Controller
         }
     }
 
+    /**
+     * Retrieve a list of all employees.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response with the list of employees or an error message.
+     */
     public function index()
     {
         try {
@@ -46,6 +57,13 @@ class EmployeeController extends Controller
         }
     }
 
+    /**
+     * Update an existing employee in the database.
+     *
+     * @param Request $request The HTTP request containing 'name' and 'email'.
+     * @param int $id The ID of the employee to update.
+     * @return \Illuminate\Http\JsonResponse A JSON response with the updated employee or an error message.
+     */
     public function update(Request $request, $id)
     {
         try {
@@ -73,6 +91,12 @@ class EmployeeController extends Controller
         }
     }
 
+    /**
+     * Delete an employee from the database.
+     *
+     * @param int $id The ID of the employee to delete.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating success or failure.
+     */
     public function destroy($id)
     {
         try {
