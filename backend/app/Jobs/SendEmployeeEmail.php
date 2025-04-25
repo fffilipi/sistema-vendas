@@ -18,13 +18,30 @@ class SendEmployeeEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * The employee instance for whom the email will be sent.
+     *
+     * @var Employee
+     */
     protected $employee;
 
+    /**
+     * Create a new job instance.
+     *
+     * @param Employee $employee The employee instance.
+     * @return void
+     */
     public function __construct(Employee $employee)
     {
         $this->employee = $employee;
     }
 
+    /**
+     * Handle the job to send the commission email to the employee.
+     *
+     * @return void
+     * @throws \Exception If no sales are registered for the employee today.
+     */
     public function handle()
     {
         try {
@@ -38,15 +55,16 @@ class SendEmployeeEmail implements ShouldQueue
 
             $totalSales = $sales->count();
             $valueTotalSales = $sales->sum('value');
-            $commission = $valueTotalSales * 0.085; // 8.5% de comissão
+            $commission = $valueTotalSales * 0.085; // 8.5% commission
 
+            // Send the email to the employee
             Mail::to($this->employee->email)
                 ->send(new CommissionEmail($this->employee, $totalSales, $valueTotalSales, $commission));
 
         } catch (Exception $e) {
             Log::error("Erro ao enviar e-mail para o vendedor: " . $e->getMessage());
 
-            // TODO: notificar o administrador sobre o erro
+            // TODO: notify the administrator about the error
         }
     }
 }
