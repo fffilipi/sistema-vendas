@@ -2,37 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Sale\StoreSaleRequest;
 use App\Models\Sale;
 use Exception;
-use Illuminate\Validation\ValidationException;
 
 class SaleController extends Controller
 {
     /**
      * Store a new sale in the database.
      *
-     * @param Request $request The HTTP request containing 'employee_id', 'value', and 'sale_date'.
+     * @param StoreSaleRequest $request The HTTP request containing 'employee_id', 'value', and 'sale_date'.
      * @return \Illuminate\Http\JsonResponse A JSON response with the created sale or an error message.
      */
-    public function store(Request $request)
+    public function store(StoreSaleRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'employee_id' => 'required|exists:employees,id',
-                'value' => 'required|numeric',
-                'sale_date' => 'required|date',
-            ]);
-
+            $validated = $request->validated();
+    
             $sale = Sale::create($validated);
+    
             return response()->json($sale, 201);
-
-        } catch (ValidationException $e) {
-            return response()->json([
-                'error' => 'Validação falhou',
-                'message' => $e->errors(),
-            ], 422);
-
+    
         } catch (Exception $e) {
             return response()->json([
                 'error' => 'Erro interno do servidor',

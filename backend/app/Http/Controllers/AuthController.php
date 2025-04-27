@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use Exception;
 
 class AuthController extends Controller
@@ -14,18 +16,12 @@ class AuthController extends Controller
     /**
      * Register a new user.
      *
-     * @param Request $request The HTTP request containing 'name', 'email', and 'password'.
+     * @param RegisterRequest $request The HTTP request containing 'name', 'email', and 'password'.
      * @return \Illuminate\Http\JsonResponse A JSON response with the created user and token, or an error message.
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6',
-            ]);
-
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -50,16 +46,13 @@ class AuthController extends Controller
     /**
      * Authenticate a user and generate an access token.
      *
-     * @param Request $request The HTTP request containing 'email' and 'password'.
+     * @param LoginRequest $request The HTTP request containing 'email' and 'password'.
      * @return \Illuminate\Http\JsonResponse A JSON response with the generated token, or an error message.
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try {
-            $credentials = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+            $credentials = $request->only('email', 'password');
 
             if (!Auth::guard('web')->attempt($credentials)) {
                 return response()->json(['message' => 'Credenciais inválidas'], 401);
