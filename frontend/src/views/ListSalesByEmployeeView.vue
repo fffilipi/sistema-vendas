@@ -104,8 +104,9 @@ export default {
 
     // Formatar a data da venda
     formatDate(dateString) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(dateString).toLocaleDateString("pt-BR", options);
+      const [year, month, day] = dateString.split('-');
+      const date = new Date(year, month - 1, day); // Mês começa em 0 no JS
+      return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
     },
 
     // Voltar para a página anterior
