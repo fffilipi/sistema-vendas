@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
+use App\Helpers\ErrorHelper;
 use App\Jobs\SendEmployeeEmail;
 use App\Models\Employee;
+use Exception;
 
 class CommissionController extends Controller
 {
@@ -17,12 +20,14 @@ class CommissionController extends Controller
     {
         try {
             $employee = Employee::findOrFail($employeeId);
-    
+
             SendEmployeeEmail::dispatch($employee);
-    
-            return response()->json(['message' => 'E-mail de comissão reenviado com sucesso!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao reenviar o e-mail: ' . $e->getMessage()], 500);
+
+            return ResponseHelper::success('E-mail de comissão reenviado com sucesso!');
+        } catch (Exception $e) {
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Ocorreu um erro ao reenviar o e-mail de comissão. Tente novamente mais tarde.');
         }
     }
 }
+            

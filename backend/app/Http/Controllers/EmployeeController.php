@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
+use App\Helpers\ResponseHelper;
+use App\Helpers\ErrorHelper;
 use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
+use App\Models\Employee;
 use Exception;
 
 class EmployeeController extends Controller
@@ -19,13 +21,11 @@ class EmployeeController extends Controller
         try {
             $employee = Employee::create($request->validated());
     
-            return response()->json($employee, 201);
+            return ResponseHelper::success($employee, 201);
     
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro interno do servidor',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Ocorreu um erro ao cadastrar o funcionário. Tente novamente mais tarde.');
         }
     }
 
@@ -38,12 +38,10 @@ class EmployeeController extends Controller
     {
         try {
             $employees = Employee::orderBy('created_at', 'desc')->get();
-            return response()->json($employees);
+            return ResponseHelper::success($employees);
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro ao buscar funcionários',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Erro ao buscar a lista de funcionários.');
         }
     }
 
@@ -58,16 +56,13 @@ class EmployeeController extends Controller
     {
         try {
             $employee = Employee::findOrFail($id);
-    
             $employee->update($request->validated());
     
-            return response()->json($employee);
+            return ResponseHelper::success($employee);
     
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro ao atualizar funcionário',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Erro ao atualizar os dados do funcionário.');
         }
     }
 
@@ -82,14 +77,12 @@ class EmployeeController extends Controller
         try {
             $employee = Employee::findOrFail($id);
             $employee->delete();
-
-            return response()->json(['message' => 'Funcionário deletado com sucesso']);
-
+    
+            return ResponseHelper::success('Funcionário deletado com sucesso');
+    
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro ao deletar funcionário',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Erro ao deletar o funcionário.');
         }
     }
 }

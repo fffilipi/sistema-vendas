@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
+use App\Helpers\ErrorHelper;
 use App\Mail\DailySalesReportEmail;
 use App\Models\Sale;
 use Exception;
@@ -44,9 +44,7 @@ class SendAdminEmail implements ShouldQueue
                 ->send(new DailySalesReportEmail($totalSalesOfDay, $totalSalesCount));
 
         } catch (Exception $e) {
-            Log::error("Erro ao enviar e-mail de relatório de vendas para o administrador: " . $e->getMessage());
-
-            // TODO: Notify the administrator about the error
+            ErrorHelper::reportError($e);
         }
     }
 }

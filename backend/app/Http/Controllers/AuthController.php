@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\ResponseHelper;
+use App\Helpers\ErrorHelper;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Exception;
 
 class AuthController extends Controller
@@ -29,7 +31,8 @@ class AuthController extends Controller
             ]);
 
             if (!$user) {
-                return response()->json(['message' => 'Erro ao registrar usuário'], 500);
+                Log::warning('Falha ao criar usuário - dados: ' . json_encode($request->only(['name', 'email'])));
+                throw new \Exception('Erro ao registrar usuário');
             }
 
             $token = $user->createToken('authToken')->plainTextToken;
@@ -37,9 +40,8 @@ class AuthController extends Controller
             return response()->json(['user' => $user, 'token' => $token], 201);
 
         } catch (Exception $e) {
-            Log::error('Erro ao registrar usuário: ' . $e->getMessage());
-
-            return response()->json(['message' => 'Erro ao registrar usuário'], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.');
         }
     }
 
@@ -55,18 +57,19 @@ class AuthController extends Controller
             $credentials = $request->only('email', 'password');
 
             if (!Auth::guard('web')->attempt($credentials)) {
-                return response()->json(['message' => 'Credenciais inválidas'], 401);
+                return ResponseHelper::error('Credenciais inválidas.', 401);
             }
 
             $user = Auth::guard('web')->user();
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            return response()->json(['token' => $token]);
+            return ResponseHelper::success('Login realizado com sucesso.', [
+                'token' => $token
+            ]);
 
         } catch (Exception $e) {
-            Log::error('Erro ao realizar login: ' . $e->getMessage());
-
-            return response()->json(['message' => 'Erro ao realizar login'], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Ocorreu um erro ao realizar login. Tente novamente mais tarde.');
         }
     }
 
@@ -80,15 +83,14 @@ class AuthController extends Controller
     {
         try {
             if ($request->user()->tokens()->delete()) {
-                return response()->json(['message' => 'Logout realizado com sucesso'], 200);
+                return ResponseHelper::success('Logout realizado com sucesso');
             }
-
-            return response()->json(['message' => 'Erro ao realizar logout'], 500);
-
-        } catch (Exception $e) {
-            Log::error('Erro ao realizar logout: ' . $e->getMessage());
-
-            return response()->json(['message' => 'Erro ao realizar logout'], 500);
+    
+            throw new \Exception('Falha ao deletar tokens');
+    
+        } catch (\Exception $e) {
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Ocorreu um erro ao realizar logout. Tente novamente mais tarde.');
         }
     }
 }

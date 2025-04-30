@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Helpers\ResponseHelper;
+use App\Helpers\ErrorHelper;
 use App\Http\Requests\Sale\StoreSaleRequest;
 use App\Models\Sale;
 use Exception;
@@ -18,16 +21,13 @@ class SaleController extends Controller
     {
         try {
             $validated = $request->validated();
-    
             $sale = Sale::create($validated);
-    
-            return response()->json($sale, 201);
-    
+
+            return ResponseHelper::success($sale, 201);
+
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro interno do servidor',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Erro ao cadastrar a venda. Tente novamente mais tarde.');
         }
     }
 
@@ -43,17 +43,15 @@ class SaleController extends Controller
                 ->orderBy('sale_date', 'desc')
                 ->get()
                 ->map(function ($sale) {
-                    $sale->sale_date = \Carbon\Carbon::parse($sale->sale_date)->format('d/m/Y');
+                    $sale->sale_date = Carbon::parse($sale->sale_date)->format('d/m/Y');
                     return $sale;
                 });
 
-            return response()->json($sales);
+            return ResponseHelper::success($sales);
 
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro ao buscar vendas',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Erro ao buscar vendas.');
         }
     }
 
@@ -67,13 +65,12 @@ class SaleController extends Controller
     {
         try {
             $sales = Sale::where('employee_id', $employeeId)->get();
-            return response()->json($sales);
+
+            return ResponseHelper::success($sales);
 
         } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Erro ao buscar vendas do vendedor',
-                'message' => $e->getMessage(),
-            ], 500);
+            ErrorHelper::reportError($e);
+            return ResponseHelper::error('Erro ao buscar vendas do vendedor.');
         }
     }
 }

@@ -8,10 +8,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use App\Helpers\ErrorHelper;
 use App\Mail\CommissionEmail;
 use App\Models\Employee;
 use App\Models\Sale;
-use Illuminate\Support\Facades\Log;
 use Exception;
 
 class SendEmployeeEmail implements ShouldQueue
@@ -62,9 +62,7 @@ class SendEmployeeEmail implements ShouldQueue
                 ->send(new CommissionEmail($this->employee, $totalSales, $valueTotalSales, $commission));
 
         } catch (Exception $e) {
-            Log::error("Erro ao enviar e-mail para o vendedor: " . $e->getMessage());
-
-            // TODO: notify the administrator about the error
+            ErrorHelper::reportError($e);
         }
     }
 }
