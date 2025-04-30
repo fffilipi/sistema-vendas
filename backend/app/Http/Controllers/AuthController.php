@@ -12,9 +12,18 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Exception;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
+
+    /**
+     * AuthController constructor.
+     *
+     * @param AuthService $authService The authentication service instance for user-related operations.
+     */
+    public function __construct(private AuthService $authService) {}
+
     /**
      * Register a new user.
      *
@@ -54,22 +63,13 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $credentials = $request->only('email', 'password');
+            $token = $this->authService->login($request->only(['email', 'password']));
 
-            if (!Auth::guard('web')->attempt($credentials)) {
-                return ResponseHelper::error('Credenciais inválidas.', 401);
-            }
-
-            $user = Auth::guard('web')->user();
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return ResponseHelper::success('Login realizado com sucesso.', [
-                'token' => $token
-            ]);
+            return ResponseHelper::success('Login realizado com sucesso.', ['token' => $token]);
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Ocorreu um erro ao realizar login. Tente novamente mais tarde.');
+            return ResponseHelper::error('Erro ao realizar login.');
         }
     }
 
