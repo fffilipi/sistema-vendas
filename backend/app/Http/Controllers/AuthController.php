@@ -3,26 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use App\Helpers\ResponseHelper;
 use App\Helpers\ErrorHelper;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
-use Exception;
 use App\Services\AuthService;
+use App\Services\RegisterUserService;
+use Exception;
 
 class AuthController extends Controller
 {
-
     /**
      * AuthController constructor.
      *
      * @param AuthService $authService The authentication service instance for user-related operations.
+     * @param RegisterUserService $registerUserService The user registration service instance.
      */
-    public function __construct(private AuthService $authService) {}
+    public function __construct(
+        private AuthService $authService,
+        private RegisterUserService $registerUserService) {}
 
     /**
      * Register a new user.
@@ -33,20 +32,9 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         try {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+            $user = $this->registerUserService->execute($request->validated());
 
-            if (!$user) {
-                Log::warning('Falha ao criar usuário - dados: ' . json_encode($request->only(['name', 'email'])));
-                throw new \Exception('Erro ao registrar usuário');
-            }
-
-            $token = $user->createToken('authToken')->plainTextToken;
-
-            return response()->json(['user' => $user, 'token' => $token], 201);
+            return ResponseHelper::success('Usuario criado com sucesso.', ['user' => $user], 201);
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);

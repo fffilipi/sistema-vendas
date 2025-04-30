@@ -14,14 +14,13 @@ class AuthService
      *
      * @param UserRepositoryInterface $userRepository The user repository instance for user-related operations.
      */
-    public function __construct(private UserRepositoryInterface $userRepository) {}
+    public function __construct(protected UserRepositoryInterface $userRepository) {}
 
     /**
      * Authenticate a user and generate an access token.
      *
      * @param array $credentials The login credentials, typically containing 'email' and 'password'.
      * @return string The generated plain text token for the authenticated user.
-     * @throws \Exception If the credentials are invalid.
      */
     public function login(array $credentials): string
     {
