@@ -11,7 +11,7 @@ class UserRepository implements UserRepositoryInterface
      * Create a new user.
      *
      * @param array $data The data to create the user with.
-     * @return \App\Models\User|null The user instance if found, or null if not.
+     * @return User|null The user instance if found, or null if not.
      */
     public function create(array $data): ?User
     {
@@ -22,7 +22,7 @@ class UserRepository implements UserRepositoryInterface
      * Find a user by their email address.
      *
      * @param string $email The email address to search for.
-     * @return \App\Models\User|null The user instance if found, or null if not.
+     * @return User|null The user instance if found, or null if not.
      */
     public function findByEmail(string $email): ?User
     {
