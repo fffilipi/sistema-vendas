@@ -25,7 +25,7 @@ class EmployeeController extends Controller
     
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Ocorreu um erro ao cadastrar o funcionário. Tente novamente mais tarde.');
+            return ResponseHelper::error('Ocorreu um erro ao cadastrar o funcionário. Tente novamente mais tarde.', $e->getCode());
         }
     }
 
@@ -41,7 +41,7 @@ class EmployeeController extends Controller
             return ResponseHelper::success($employees);
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao buscar a lista de funcionários.');
+            return ResponseHelper::error('Erro ao buscar a lista de funcionários.', $e->getCode());
         }
     }
 
@@ -62,7 +62,7 @@ class EmployeeController extends Controller
     
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao atualizar os dados do funcionário.');
+            return ResponseHelper::error('Erro ao atualizar os dados do funcionário.', $e->getCode());
         }
     }
 
@@ -82,7 +82,7 @@ class EmployeeController extends Controller
     
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao deletar o funcionário.');
+            return ResponseHelper::error('Erro ao deletar o funcionário.', $e->getCode());
         }
     }
 }

@@ -27,7 +27,7 @@ class SaleController extends Controller
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao cadastrar a venda. Tente novamente mais tarde.');
+            return ResponseHelper::error('Erro ao cadastrar a venda. Tente novamente mais tarde.', $e->getCode());
         }
     }
 
@@ -51,7 +51,7 @@ class SaleController extends Controller
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao buscar vendas.');
+            return ResponseHelper::error('Erro ao buscar vendas.', $e->getCode());
         }
     }
 
@@ -70,7 +70,7 @@ class SaleController extends Controller
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao buscar vendas do vendedor.');
+            return ResponseHelper::error('Erro ao buscar vendas do vendedor.', $e->getCode());
         }
     }
 }

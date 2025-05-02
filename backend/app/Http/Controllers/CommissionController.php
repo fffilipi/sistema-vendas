@@ -26,7 +26,7 @@ class CommissionController extends Controller
             return ResponseHelper::success('E-mail de comissão reenviado com sucesso!');
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Ocorreu um erro ao reenviar o e-mail de comissão. Tente novamente mais tarde.');
+            return ResponseHelper::error('Ocorreu um erro ao reenviar o e-mail de comissão. Tente novamente mais tarde.', $e->getCode());
         }
     }
 }
