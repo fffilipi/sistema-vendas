@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Dto\Auth\RegisterUserDto;
+use App\Dto\Auth\LoginUserDto;
+use App\Dto\Auth\LogoutUserDto;
 use App\Helpers\ResponseHelper;
 use App\Helpers\ErrorHelper;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Services\AuthService;
-use App\Services\RegisterUserService;
+use App\Services\Auth\LoginUserService;
+use App\Services\Auth\RegisterUserService;
+use App\Services\Auth\LogoutUserService;
 use Exception;
 
 class AuthController extends Controller
@@ -16,12 +20,15 @@ class AuthController extends Controller
     /**
      * AuthController constructor.
      *
-     * @param AuthService $authService The authentication service instance for user-related operations.
+     * @param LoginUserService $loginUserService The authentication service instance for user-related operations.
      * @param RegisterUserService $registerUserService The user registration service instance.
+     * @param LogoutUserService $logoutUserService The user logout service instance.
      */
     public function __construct(
-        private AuthService $authService,
-        private RegisterUserService $registerUserService) {}
+        private LoginUserService $loginUserService,
+        private RegisterUserService $registerUserService,
+        private LogoutUserService $logoutUserService
+    ) {}
 
     /**
      * Register a new user.
@@ -32,13 +39,15 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         try {
-            $user = $this->registerUserService->execute($request->validated());
+            $data = RegisterUserDto::fromArray($request->validated());
+
+            $user = $this->registerUserService->execute($data);
 
             return ResponseHelper::success('Usuario criado com sucesso.', ['user' => $user], 201);
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.');
+            return ResponseHelper::error('Ocorreu um erro ao registrar o usuário. Tente novamente mais tarde.', $e->getCode());
         }
     }
 
@@ -51,13 +60,15 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $token = $this->authService->login($request->only(['email', 'password']));
+            $data = LoginUserDto::fromArray($request->only(['email', 'password']));
+
+            $token = $this->loginUserService->login($data);
 
             return ResponseHelper::success('Login realizado com sucesso.', ['token' => $token]);
 
         } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Erro ao realizar login.');
+            return ResponseHelper::error('Erro ao realizar login.', $e->getCode());
         }
     }
 
@@ -70,15 +81,19 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
-            if ($request->user()->tokens()->delete()) {
-                return ResponseHelper::success('Logout realizado com sucesso');
+            $data = LogoutUserDto::fromRequest($request);
+
+            $logoutSuccess = $this->logoutUserService->logout($data);
+
+            if (!$logoutSuccess) {
+                throw new Exception('Falha ao deletar tokens', 500);
             }
-    
-            throw new \Exception('Falha ao deletar tokens');
-    
-        } catch (\Exception $e) {
+
+            return ResponseHelper::success('Logout realizado com sucesso');
+
+        } catch (Exception $e) {
             ErrorHelper::reportError($e);
-            return ResponseHelper::error('Ocorreu um erro ao realizar logout. Tente novamente mais tarde.');
+            return ResponseHelper::error('Ocorreu um erro ao realizar logout. Tente novamente mais tarde.', $e->getCode());
         }
     }
 }
