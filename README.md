@@ -97,6 +97,24 @@ cp .env.example .env
 npm run dev
 ```
 
+### Rodar testes unitários
+
+Acesse o container da api
+
+```
+cd backend
+```
+
+```
+docker-compose exec app bash
+```
+
+Execute:
+
+```
+php artisan test
+```
+
 ### Acesse a aplicação
 
 http://localhost:5173/
