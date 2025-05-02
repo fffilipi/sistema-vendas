@@ -15,6 +15,10 @@ git clone git@github.com:fffilipi/sistema-vendas.git
 Suba os contêineres necessários (com a opção --build para garantir que as imagens sejam construídas corretamente e -d para rodar em segundo plano):
 
 ```
+cd backend
+```
+
+```
 docker-compose up --build -d
 ```
 
@@ -23,7 +27,14 @@ Acesse o contêiner do Laravel e instale as dependências do Composer:
 
 ```
 docker-compose exec app bash
+```
+
+```
 composer install
+```
+
+```
+exit
 ```
 
 ### **4. Configure o banco de dados**
@@ -31,6 +42,9 @@ Acesse a pasta backend
 
 ```
 cd backend
+```
+
+```
 cp .env.example .env
 ```
 
@@ -49,7 +63,13 @@ Gere a chave da aplicação e rode as migrations ja com os seeders para os dados
 
 ```
 docker-compose exec app bash
+```
+
+```
 php artisan key:generate
+```
+
+```
 php artisan migrate --seed
 ```
 
@@ -57,6 +77,9 @@ php artisan migrate --seed
 
 ```
 cd frontend
+```
+
+```
 npm install
 ```
 
