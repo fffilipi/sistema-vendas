@@ -34,6 +34,10 @@ class ResponseHelper
      */
     public static function error(string $message = 'Erro interno. Tente novamente mais tarde.', int $status = 500): JsonResponse
     {
+        if ($status < 100 || $status >= 600) {
+            $status = 500;
+        }
+
         return response()->json([
             'message' => $message
         ], $status);
