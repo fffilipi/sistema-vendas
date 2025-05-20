@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Auth;
 
-use App\Repositories\Contracts\TokenRepositoryInterface;
+use App\Repositories\Contracts\Auth\TokenRepositoryInterface;
 use App\Models\User;
 
 class TokenRepository implements TokenRepositoryInterface

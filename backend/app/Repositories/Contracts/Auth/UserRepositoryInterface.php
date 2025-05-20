@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Contracts\Auth;
 
 use App\Models\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+interface UserRepositoryInterface
 {
     /**
      * Create a new user.
@@ -13,10 +12,7 @@ class UserRepository implements UserRepositoryInterface
      * @param array $data The data to create the user with.
      * @return User|null The user instance if found, or null if not.
      */
-    public function create(array $data): ?User
-    {
-        return User::create($data);
-    }
+    public function create(array $data): ?User;
 
     /**
      * Find a user by their email address.
@@ -24,8 +20,5 @@ class UserRepository implements UserRepositoryInterface
      * @param string $email The email address to search for.
      * @return User|null The user instance if found, or null if not.
      */
-    public function findByEmail(string $email): ?User
-    {
-        return User::where('email', $email)->first();
-    }
+    public function findByEmail(string $email): ?User;
 }

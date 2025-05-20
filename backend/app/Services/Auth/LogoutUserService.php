@@ -2,7 +2,7 @@
 
 namespace App\Services\Auth;
 
-use App\Repositories\Contracts\TokenRepositoryInterface;
+use App\Repositories\Contracts\Auth\TokenRepositoryInterface;
 use App\DTO\Auth\LogoutUserDto;
 
 class LogoutUserService

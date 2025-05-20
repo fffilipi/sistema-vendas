@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Auth;
+namespace App\Services\Comission;
 
 use App\Dto\Auth\LoginUserDto;
 use App\Repositories\Contracts\Auth\UserRepositoryInterface;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 
-class LoginUserService
+class ResendReportCommissionService
 {
     /**
      * LoginUserService constructor.

@@ -3,7 +3,7 @@ namespace App\Services\Auth;
 
 use Illuminate\Support\Facades\Hash;
 use App\Dto\Auth\RegisterUserDto;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Contracts\Auth\UserRepositoryInterface;
 use Exception;
 
 class RegisterUserService
